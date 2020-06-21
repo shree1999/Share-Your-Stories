@@ -10,6 +10,43 @@ router.get("/add", ensureAuth, (req, res) => {
   res.render("stories/add");
 });
 
+// @route -> GET /stories/id
+// @desc  -> show single story
+
+router.get("/:id", ensureAuth, async (req, res) => {
+  try {
+    let story = await Story.findById(req.params.id).populate("user").lean();
+
+    if (!story) {
+      return res.render("errors/404");
+    }
+
+    res.render("stories/show", { story });
+  } catch (err) {
+    console.error(err.message);
+    res.render("errors/404");
+  }
+});
+
+// @route -> GET /stories/user/user-id
+// @desc  -> get users stories
+
+router.get("/user/:user_id", ensureAuth, async (req, res) => {
+  try {
+    const stories = await Story.find({
+      user: req.params.user_id,
+      status: public,
+    })
+      .populate("user")
+      .lean();
+
+    res.render("stories/index", { stories });
+  } catch (err) {
+    console.log(err.message);
+    res.render("errors/500");
+  }
+});
+
 // @route -> POST /stories
 // @desc  -> load stories
 

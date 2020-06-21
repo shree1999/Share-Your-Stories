@@ -29,6 +29,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// set global variable for logged in user
+app.use(function (req, res, next) {
+  res.locals.user = req.user || null;
+  next();
+});
+
 // environment
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -37,8 +43,23 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//helpers
+const {
+  formateDate,
+  stripTags,
+  truncate,
+  editIcons,
+} = require("./helpers/hbs");
+
 // handlebars
-app.engine(".hbs", exphbs({ extname: ".hbs", defaultLayout: "main" }));
+app.engine(
+  ".hbs",
+  exphbs({
+    helpers: { formateDate, stripTags, truncate, editIcons },
+    extname: ".hbs",
+    defaultLayout: "main",
+  })
+);
 app.set("view engine", ".hbs");
 app.use(express.static(path.join(__dirname, "public")));
 

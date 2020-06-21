@@ -11,3 +11,7 @@ p {
   margin-top: 50px;
   text-align: center;
 }
+
+.card-container {
+  padding: 1rem;
+}

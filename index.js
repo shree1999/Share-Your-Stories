@@ -34,6 +34,9 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 // handlebars
 app.engine(".hbs", exphbs({ extname: ".hbs", defaultLayout: "main" }));
 app.set("view engine", ".hbs");
@@ -42,7 +45,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // routes
 app.use("/", require("./routes/index"));
 app.use("/auth", require("./routes/auth"));
-
+app.use("/stories", require("./routes/stories"));
 app.listen(PORT, () => {
   console.log(
     `Server running in ${process.env.NODE_ENV} on port ${process.env.PORT}`

@@ -35,7 +35,7 @@ router.get("/user/:user_id", ensureAuth, async (req, res) => {
   try {
     const stories = await Story.find({
       user: req.params.user_id,
-      status: public,
+      status: "public",
     })
       .populate("user")
       .lean();

@@ -15,3 +15,8 @@ p {
 .card-container {
   padding: 1rem;
 }
+
+.btn-float {
+  float: left;
+  margin-right: 10px;
+}
